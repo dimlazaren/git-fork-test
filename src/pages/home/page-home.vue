@@ -1,12 +1,19 @@
 <template>
     <div class="page-home">
-
+        <div class="page-home__content">
+            <div class="page-home__title">Welcome to test project</div>
+            <search-input @button-click="$router.push({ name: 'results' })"/>
+        </div>
     </div>
 </template>
 
 <script>
-    export default {
+    import SearchInput from '@/blocks/search-input';
 
+    export default {
+        components: {
+            SearchInput,
+        },
     }
 </script>
 

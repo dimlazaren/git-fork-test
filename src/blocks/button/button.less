@@ -1,0 +1,20 @@
+@import '../../styles/helpers';
+
+.button {
+    padding: 10px 15px;
+    color: @color-white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-transform: uppercase;
+    font-weight: 600;
+    background-color: @color-black;
+    border: none;
+    cursor: pointer;
+    transition: opacity .2s;
+    border-radius: 5px;
+
+    .hover({
+        opacity: 0.8;
+    });
+}

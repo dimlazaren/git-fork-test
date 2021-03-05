@@ -1,7 +1,7 @@
 @import './vars';
 
 .hover(@params) {
-    @media screen and (min-width: @min-desktop) {
+    @media @min-desktop {
         &:hover {
             @params();
         }
