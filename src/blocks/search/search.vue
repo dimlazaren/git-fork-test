@@ -1,10 +1,10 @@
 <template>
-    <div class="search-input">
-        <input-block class="search-input__input" placeholder=":owner/:repositoryName" v-model="searchString"/>
-        <div v-if="isGetResultButtonTouched && !isSearchStringValidate" class="search-input__error">
+    <div class="search">
+        <input-block class="search__input" placeholder=":owner/:repositoryName" v-model="searchString"/>
+        <div v-if="isGetResultButtonTouched && !isSearchStringValidate" class="search__error">
             Enter search request in format :owner/:repositoryName
         </div>
-        <button-block class="search-input__button" @click="onButtonClick">Get results</button-block>
+        <button-block class="search__button" @click="onButtonClick">Get results</button-block>
     </div>
 </template>
 
@@ -31,8 +31,7 @@
                 },
             },
             isSearchStringValidate() {
-                const { owner, repositoryName } = this.$store.getters['global/searchParams'];
-                return Boolean(owner && repositoryName);
+                return this.$store.getters['global/isSearchStringValidate'];
             },
         },
         methods: {
@@ -47,4 +46,4 @@
     }
 </script>
 
-<style src="./search-input.less" lang="less"/>
+<style src="./search.less" lang="less"/>

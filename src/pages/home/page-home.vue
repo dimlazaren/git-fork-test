@@ -2,17 +2,17 @@
     <div class="page-home">
         <div class="page-home__content">
             <div class="page-home__title">Welcome to test project</div>
-            <search-input @button-click="$router.push({ name: 'results' })"/>
+            <search-block @button-click="$router.push({ name: 'results' })"/>
         </div>
     </div>
 </template>
 
 <script>
-    import SearchInput from '@/blocks/search-input';
+    import SearchBlock from '@/blocks/search';
 
     export default {
         components: {
-            SearchInput,
+            SearchBlock,
         },
     }
 </script>

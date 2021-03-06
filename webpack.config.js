@@ -8,6 +8,9 @@ const autoprefixer = require('autoprefixer');
 const { VueLoaderPlugin } = require('vue-loader');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const webpack = require('webpack');
+const dotenv = require('dotenv');
+
+dotenv.config();
 
 module.exports = (env, { mode = 'development' }) => {
     const isProduction = mode === 'production';
@@ -159,6 +162,9 @@ module.exports = (env, { mode = 'development' }) => {
             new webpack.DefinePlugin({
                 __VUE_OPTIONS_API__: true,
                 __VUE_PROD_DEVTOOLS__: false,
+                'process.env': {
+                    API_URL: JSON.stringify(process.env.API_URL),
+                },
             }),
             new VueLoaderPlugin(),
             new HtmlWebpackPlugin({

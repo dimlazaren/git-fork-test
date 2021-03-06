@@ -1,3 +1,5 @@
+import { camelToKebab } from '@/tools';
+
 export default {
     methods: {
         getBemClass(name, mods = {}) {

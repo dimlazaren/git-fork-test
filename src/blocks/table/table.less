@@ -1,0 +1,20 @@
+@import '../../styles/helpers';
+
+.table {
+    &__row {
+        display: flex;
+
+        & + & {
+            margin-top: 10px;
+        }
+    }
+
+    &__cell {
+        width: 100%;
+        .ellipsis;
+
+        &_head {
+            font-weight: 700;
+        }
+    }
+}
