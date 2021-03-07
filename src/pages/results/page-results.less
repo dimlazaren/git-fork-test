@@ -1,3 +1,5 @@
+@import '../../styles/helpers';
+
 .page-results {
     &__content {
         max-width: 1200px;
@@ -7,10 +9,19 @@
 
     &__search {
         max-width: 500px;
-        margin: 0 auto 30px auto;
+        margin: 0 auto 100px auto;
+    }
+
+    &__table-holder {
+        position: relative;
+    }
+
+    &__table-loader {
+        background-color: fade(@color-white, 30);
+        z-index: 10;
     }
 
     &__table-pagination {
-        margin-top: 10px;
+        margin-top: 30px;
     }
 }

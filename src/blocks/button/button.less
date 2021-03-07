@@ -1,20 +1,39 @@
 @import '../../styles/helpers';
 
 .button {
-    padding: 10px 15px;
-    color: @color-white;
+    padding: 5px 50px;
+    height: 50px;
+    color: @color-black;
     display: flex;
     justify-content: center;
     align-items: center;
     text-transform: uppercase;
     font-weight: 600;
-    background-color: @color-black;
-    border: none;
-    cursor: pointer;
     transition: opacity .2s;
-    border-radius: 5px;
+    background-image: linear-gradient(180deg, #F2F2F2 0%, #F5F5F5 98.82%);
+    box-shadow: 0px -10px 30px #FFFFFF, 0px 5px 30px rgba(114, 102, 95, 0.25);
+    border: 3px solid @color-white;
+    box-sizing: border-box;
+    border-image:
+        linear-gradient(
+            to bottom,
+            @color-white,
+            #F2F2F2
+        ) 1 100%;
+    border-radius: 32px;
+    font-family: inherit;
+    outline: none;
 
-    .hover({
-        opacity: 0.8;
-    });
+    &:not([disabled]) {
+        cursor: pointer;
+
+        .hover({
+            opacity: 0.8;
+        });
+    }
+
+    &[disabled] {
+        cursor: not-allowed;
+        color: #A6A6A6;
+    }
 }

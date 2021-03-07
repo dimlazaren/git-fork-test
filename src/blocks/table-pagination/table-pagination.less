@@ -6,4 +6,22 @@
     &__pages-holder {
         display: flex;
     }
+
+    &__page {
+        border: none;
+        background: none;
+        outline: none;
+
+        &_active {
+            color: @color-blue;
+        }
+
+        &:not(&_active):not(&[disabled])&:not(&_more) {
+            cursor: pointer;
+        }
+
+        &_more {
+            cursor: default;
+        }
+    }
 }

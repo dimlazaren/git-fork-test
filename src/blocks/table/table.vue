@@ -5,13 +5,14 @@
                 {{ column.label }}
             </div>
         </div>
-        <div v-for="row in rows" :class="getBemClass('table__row', { body: true })">
+        <div v-if="!$slots.body" v-for="row in rows" :class="getBemClass('table__row', { body: true })">
             <div v-for="column in columns" :class="getBemClass('table__cell', { body: true })">
                 <slot :name="`cell:${ column.code }`" :row="row">
                     {{ row[column.code] }}
                 </slot>
             </div>
         </div>
+        <slot name="body"/>
     </div>
 </template>
 

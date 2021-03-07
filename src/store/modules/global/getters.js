@@ -2,11 +2,11 @@ import store from '@/store';
 
 export const getters = {
     searchParams(state) {
-        const splittedString = state.searchString.split('/');
-        return { owner: splittedString[0], repositoryName: splittedString[1] };
+        const [owner, repositoryName, ...rest] = state.searchString.split('/');
+        return { owner, repositoryName, ...rest };
     },
     isSearchStringValidate(state) {
-        const { owner, repositoryName } = store.getters['global/searchParams'];
-        return Boolean(owner && repositoryName);
+        const { owner, repositoryName, ...rest } = store.getters['global/searchParams'];
+        return Boolean(owner && repositoryName) && Object.keys(rest).length === 0;
     },
 };

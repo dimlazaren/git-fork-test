@@ -13,3 +13,19 @@
     text-overflow: ellipsis;
     overflow: hidden;
 }
+
+.square(@size) {
+    width: @size;
+    height: @size;
+}
+
+.contain {
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+}
+
+
+.img(@name) {
+    background-image: url("../images/@{name}");
+}

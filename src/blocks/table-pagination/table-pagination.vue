@@ -2,7 +2,7 @@
     <div class="table-pagination">
         <button
             class="table-pagination__page"
-            :disabled="pagination.current_page === 1"
+            :disabled="currentPage === 1"
             @click="onPaginationClick('back')"
         >
             &lt;
@@ -13,7 +13,7 @@
                 :is="page !== 'more' ? 'button' : 'div'"
                 :key="`${ page }-${ pageIndex }`"
                 :class="getBemClass('table-pagination__page',
-                    { active: pagination.current_page === page, more: page === 'more' }
+                    { active: currentPage === page, more: page === 'more' }
                 )"
                 @click="onPaginationClick(page)"
             >
@@ -22,7 +22,7 @@
         </div>
         <button
             class="table-pagination__page"
-            :disabled="pagination.current_page === pagination.last_page"
+            :disabled="currentPage === lastPage"
             @click="onPaginationClick('forward')"
         >
             >

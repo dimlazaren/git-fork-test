@@ -1,11 +1,14 @@
 <template>
-    <input
-        class="input"
-        type="text"
-        :placeholder="placeholder"
-        :value="modelValue"
-        @input="$emit('update:modelValue', $event.target.value)"
-    >
+    <div :class="getBemClass('input', { icon })">
+        <input
+            class="input__field"
+            type="text"
+            :placeholder="placeholder"
+            :value="modelValue"
+            @input="$emit('update:modelValue', $event.target.value)"
+            @keypress.enter="$emit('enter-key-press')"
+        >
+    </div>
 </template>
 
 <script>
@@ -13,8 +16,9 @@
         props: {
             placeholder: String,
             modelValue: String,
+            icon: String,
         },
-        emits: ['update:modelValue'],
+        emits: ['update:modelValue', 'enter-key-press'],
     }
 </script>
 
