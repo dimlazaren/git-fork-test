@@ -9,6 +9,7 @@ const { VueLoaderPlugin } = require('vue-loader');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const webpack = require('webpack');
 const dotenv = require('dotenv');
+const SvgSpriteHtmlWebpackPlugin = require('./lib/svg-sprite-html-webpack');
 
 dotenv.config();
 
@@ -176,6 +177,11 @@ module.exports = (env, { mode = 'development' }) => {
                     collapseWhitespace: true,
                     conservativeCollapse: true
                 } : false
+            }),
+            new SvgSpriteHtmlWebpackPlugin({
+                includeFiles: [
+                    'src/images/sprite-svg-icons/*.svg',
+                ],
             }),
             new CopyWebpackPlugin({
                 patterns: [

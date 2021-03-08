@@ -10,7 +10,9 @@
 
 <script>
     export default {
-
+        created() {
+            this.$store.commit('favorites/updateItemsFromLocalStorage');
+        },
     }
 </script>
 

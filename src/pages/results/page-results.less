@@ -1,6 +1,11 @@
 @import '../../styles/helpers';
 
 .page-results {
+    &__loader {
+        background-color: fade(@color-white, 30);
+        z-index: 10;
+    }
+
     &__content {
         max-width: 1200px;
         margin: 0 auto;
@@ -16,12 +21,17 @@
         position: relative;
     }
 
-    &__table-loader {
-        background-color: fade(@color-white, 30);
-        z-index: 10;
-    }
-
     &__table-pagination {
         margin-top: 30px;
+    }
+
+    &__favorites-button {
+        .square(15px);
+        cursor: pointer;
+        transition: fill .2s ease-in-out;
+
+        &_added {
+            fill: @color-yellow;
+        }
     }
 }

@@ -1,7 +1,7 @@
 <template>
     <div class="page-results">
         <transition name="fade-animation">
-            <loader-block v-if="isRowsLoading" class="page-results__table-loader"/>
+            <loader-block v-if="isRowsLoading" class="page-results__loader"/>
         </transition>
         <div class="page-results__content">
             <search-block
@@ -9,7 +9,8 @@
                 :button-disabled="isRowsLoading"
                 @button-click="updateRows"
             />
-            <div v-if="is404SearchRequest">Repo not found. Try changing the params</div>
+            <div v-if="searchRequestError === 404">Repo not found. Try changing the params</div>
+            <div v-else-if="searchRequestError === 403">Github API request limit reached</div>
             <template v-else>
                 <div class="page-results__table-holder">
                     <table-block v-if="rows" :rows="rows" :columns="columns">
@@ -17,6 +18,17 @@
                         <template #cell:owner="{ row }">{{ row.owner.login }}</template>
                         <template #cell:html_url="{ row }">
                             <a :href="row.html_url" target="_blank">{{ row.html_url }}</a>
+                        </template>
+                        <template #cell:favorites="{ row }">
+                            <div :title="isItemInFavorites(row.id) ? 'Remove from favorites' : 'Add to favorites'">
+                                <svg-icon
+                                    name="star"
+                                    :class="getBemClass('page-results__favorites-button',
+                                        { added: isItemInFavorites(row.id) },
+                                    )"
+                                    @click="favoriteButtonClick(row.id)"
+                                />
+                            </div>
                         </template>
                     </table-block>
                 </div>
@@ -37,6 +49,7 @@
     import TableBlock from '@/blocks/table';
     import TablePagination from '@/blocks/table-pagination';
     import LoaderBlock from '@/blocks/loader';
+    import SvgIcon from '@/blocks/svg-icon';
     import columns from './data/columns';
     import api from '@/api';
     import { clone } from '@/tools';
@@ -50,6 +63,7 @@
             TableBlock,
             TablePagination,
             LoaderBlock,
+            SvgIcon,
         },
         data: () => ({
             rows: null,
@@ -58,7 +72,7 @@
             page: 1,
             perPage,
             isRowsLoading: false,
-            is404SearchRequest: false,
+            searchRequestError: null,
         }),
         created() {
             this.updateRows();
@@ -68,6 +82,9 @@
                 searchParams: 'searchParams',
                 isSearchStringValidate: 'isSearchStringValidate',
             }),
+            favoriteForks() {
+                return this.$store.state.favorites.itemsIds;
+            },
         },
         methods: {
             async updateRows(page = 1) {
@@ -75,19 +92,36 @@
                     return;
                 }
                 try {
-                    this.is404SearchRequest = false;
+                    this.searchRequestError = null;
                     this.isRowsLoading = true;
                     this.page = page;
                     const { owner, repositoryName } = this.searchParams;
-                    this.rows = await api.forks.getList({ page: this.page, perPage: this.perPage, owner, repositoryName });
+                    this.rows = await api.forks.getList({
+                        page: this.page,
+                        perPage: this.perPage,
+                        owner,
+                        repositoryName,
+                    });
                     const { forks } = await api.forks.getRepo({ owner, repositoryName });
                     this.forksCount = forks;
                 } catch (error) {
                     if (error.status === 404) {
-                        this.is404SearchRequest = true;
+                        this.searchRequestError = 404;
+                    } else if (error.status === 403) {
+                        this.searchRequestError = 403;
                     }
                 } finally {
                     this.isRowsLoading = false;
+                }
+            },
+            isItemInFavorites(id) {
+                return this.favoriteForks.includes(id);
+            },
+            favoriteButtonClick(id) {
+                if (this.isItemInFavorites(id)) {
+                    this.$store.commit('favorites/removeItem', id);
+                } else {
+                    this.$store.commit('favorites/addItem', id);
                 }
             },
         },

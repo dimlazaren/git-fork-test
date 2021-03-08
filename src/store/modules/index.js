@@ -1,7 +1,9 @@
 import { module as global } from './global';
+import { module as favorites } from './favorites';
 
 const modules = {
     global,
+    favorites,
 };
 
 export const vuex = Object.keys(modules).reduce((res, moduleName) => {

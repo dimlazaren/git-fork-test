@@ -15,4 +15,8 @@ export default [
         code: 'html_url',
         label: 'Repo link',
     },
+    {
+        code: 'favorites',
+        label: 'Favorites',
+    },
 ];
