@@ -78,7 +78,7 @@
             rows: null,
             forksCount: null,
             columns: clone(columns),
-            page: null,
+            page: 1,
             perPage,
             isRowsLoading: false,
             searchRequestError: null,
@@ -88,7 +88,7 @@
             if (repository) {
                 this.$store.commit('global/setSearchString', repository);
             }
-            this.updateRows(+page);
+            this.updateRows(page && +page);
         },
         computed: {
             ...mapGetters('global', {
