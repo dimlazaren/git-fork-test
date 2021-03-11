@@ -1,7 +1,7 @@
 import { createRouter, createWebHashHistory } from 'vue-router';
 
 import PageHome from '@/pages/home';
-import PageResults from '@/pages/results';
+import PageSearch from '@/pages/search';
 
 const routerHistory = createWebHashHistory();
 
@@ -14,9 +14,9 @@ export default createRouter({
             component: PageHome,
         },
         {
-            path: '/results/',
-            name: 'results',
-            component: PageResults,
+            path: '/search/',
+            name: 'search',
+            component: PageSearch,
         },
     ]
 });

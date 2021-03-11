@@ -1,18 +1,18 @@
 <template>
-    <div class="page-results">
+    <div class="page-search">
         <transition name="fade-animation">
-            <loader-block v-if="isRowsLoading" class="page-results__loader"/>
+            <loader-block v-if="isRowsLoading" class="page-search__loader"/>
         </transition>
-        <div class="page-results__content">
+        <div class="page-search__content">
             <search-block
-                class="page-results__search"
+                class="page-search__search"
                 :button-disabled="isRowsLoading"
                 @button-click="updateRows"
             />
             <div v-if="searchRequestError === 404">Repo not found. Try changing the params</div>
             <div v-else-if="searchRequestError === 403">Github API request limit reached</div>
             <template v-else>
-                <div class="page-results__table-holder">
+                <div class="page-search__table-holder">
                     <table-block v-if="rows" :rows="rows" :columns="columns">
                         <template v-if="rows.length === 0" #body>No results</template>
                         <template #cell:owner="{ row }">{{ row.owner.login }}</template>
@@ -23,7 +23,7 @@
                             <div :title="isItemInFavorites(row.id) ? 'Remove from favorites' : 'Add to favorites'">
                                 <svg-icon
                                     name="star"
-                                    :class="getBemClass('page-results__favorites-button',
+                                    :class="getBemClass('page-search__favorites-button',
                                         { added: isItemInFavorites(row.id) },
                                     )"
                                     @click="favoriteButtonClick(row.id)"
@@ -36,10 +36,17 @@
                     v-if="forksCount > perPage"
                     :current-page="page"
                     :last-page="Math.ceil(forksCount / perPage)"
-                    class="page-results__table-pagination"
+                    class="page-search__table-pagination"
                     @go-to-page="updateRows($event)"
                 />
             </template>
+            <transition name="fade-animation">
+                <button-block
+                    v-if="rows && rows.length > 0 && !searchRequestError"
+                    class="page-search__copy-link-button"
+                    @click="onCopyLinkButtonClick"
+                >Copy search link</button-block>
+            </transition>
         </div>
     </div>
 </template>
@@ -50,9 +57,10 @@
     import TablePagination from '@/blocks/table-pagination';
     import LoaderBlock from '@/blocks/loader';
     import SvgIcon from '@/blocks/svg-icon';
+    import ButtonBlock from '@/blocks/button';
     import columns from './data/columns';
     import api from '@/api';
-    import { clone } from '@/tools';
+    import { clone, copyText } from '@/tools';
     import { mapGetters } from 'vuex';
 
     const perPage = 5;
@@ -64,18 +72,23 @@
             TablePagination,
             LoaderBlock,
             SvgIcon,
+            ButtonBlock,
         },
         data: () => ({
             rows: null,
             forksCount: null,
             columns: clone(columns),
-            page: 1,
+            page: null,
             perPage,
             isRowsLoading: false,
             searchRequestError: null,
         }),
         created() {
-            this.updateRows();
+            const { repository, page } = this.$route.query;
+            if (repository) {
+                this.$store.commit('global/setSearchString', repository);
+            }
+            this.updateRows(+page);
         },
         computed: {
             ...mapGetters('global', {
@@ -102,6 +115,12 @@
                         owner,
                         repositoryName,
                     });
+                    this.$router.push({ query:
+                        {
+                            repository: `${ owner }/${ repositoryName }`,
+                            page,
+                        },
+                    });
                     const { forks } = await api.forks.getRepo({ owner, repositoryName });
                     this.forksCount = forks;
                 } catch (error) {
@@ -124,8 +143,11 @@
                     this.$store.commit('favorites/addItem', id);
                 }
             },
+            onCopyLinkButtonClick() {
+                copyText(location.href);
+            },
         },
     }
 </script>
 
-<style src="./page-results.less" lang="less"/>
+<style src="./page-search.less" lang="less"/>

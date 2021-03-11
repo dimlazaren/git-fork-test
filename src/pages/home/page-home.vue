@@ -2,7 +2,7 @@
     <div class="page-home">
         <div class="page-home__content">
             <div class="page-home__title">Welcome to test project</div>
-            <search-block @button-click="$router.push({ name: 'results' })"/>
+            <search-block @button-click="$router.push({ name: 'search' })"/>
         </div>
     </div>
 </template>
